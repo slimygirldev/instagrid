@@ -11,18 +11,11 @@ import UIKit
 class SharingService {
 
 
-    func transformViewToImage(view: UIView) {
+    func transformViewToImage(view: UIView) -> UIImage {
         let renderer = UIGraphicsImageRenderer(size: view.bounds.size)
         let image = renderer.image { ctx in
             view.drawHierarchy(in: view.bounds, afterScreenUpdates: true)
         }
+        return image
     }
-
-//    func shareOnlyImage(_ sender: UIButton) {
-//        let image = UIImage(named: "Product")
-//        let imageShare = [ image! ]
-//        let activityViewController = UIActivityViewController(activityItems: imageShare , applicationActivities: nil)
-//        activityViewController.popoverPresentationController?.sourceView = self.view
-//        self.present(activityViewController, animated: true, completion: nil)
-//    }
 }

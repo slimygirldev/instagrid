@@ -38,7 +38,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="0c5-BH-isg" userLabel="App Stack View">
-                                        <rect key="frame" x="0.0" y="136" width="414" height="682"/>
+                                        <rect key="frame" x="0.0" y="66" width="414" height="752"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="eCC-qZ-T5B" userLabel="Content Stack View">
                                                 <rect key="frame" x="57" y="0.0" width="300" height="358"/>
@@ -64,6 +64,7 @@
                                                             </label>
                                                         </subviews>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <variation key="heightClass=compact-widthClass=compact" spacing="5"/>
                                                     </stackView>
                                                     <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="T0W-E1-IBX" userLabel="LayoutViews">
                                                         <rect key="frame" x="0.0" y="58" width="300" height="300"/>
@@ -293,9 +294,12 @@
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <variation key="heightClass=compact-widthClass=compact" axis="horizontal"/>
                                                 <variation key="heightClass=compact-widthClass=regular" axis="horizontal" spacing="10"/>
+                                                <connections>
+                                                    <outletCollection property="gestureRecognizers" destination="mut-Ma-jZ5" appends="YES" id="0gE-j0-NC0"/>
+                                                </connections>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="center" distribution="fillEqually" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="3Wx-c5-NTE" userLabel="LayoutsButtons">
-                                                <rect key="frame" x="67" y="602" width="280" height="80"/>
+                                                <rect key="frame" x="67" y="672" width="280" height="80"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dgy-nV-obH" userLabel="LayoutButtonOneView" customClass="LayoutButtonView" customModule="Instagrid" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
@@ -418,10 +422,12 @@
                                                 <include reference="UHa-fH-aw0"/>
                                             </mask>
                                         </variation>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="shX-9F-0qu" appends="YES" id="kjL-TD-dqJ"/>
+                                        </connections>
                                     </stackView>
                                 </subviews>
-                                <variation key="heightClass=compact-widthClass=compact"/>
-                                <variation key="heightClass=regular-widthClass=compact" spacing="100"/>
+                                <variation key="heightClass=regular-widthClass=compact" spacing="30"/>
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -441,6 +447,7 @@
                         <outlet property="layoutOneView" destination="8bY-v4-5oP" id="cw2-e8-TWk"/>
                         <outlet property="layoutThreeView" destination="2BK-Ic-lzs" id="yU8-ss-zO5"/>
                         <outlet property="layoutTwoView" destination="qWf-MD-9cb" id="CYo-TS-gRo"/>
+                        <outlet property="mainView" destination="eCC-qZ-T5B" id="21x-eg-h7d"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -509,7 +516,16 @@
                         <action selector="didTapButton:" destination="BYZ-38-t0r" id="3Wa-BN-OkL"/>
                     </connections>
                 </tapGestureRecognizer>
-                <swipeGestureRecognizer direction="right" id="shX-9F-0qu"/>
+                <swipeGestureRecognizer direction="up" id="shX-9F-0qu">
+                    <connections>
+                        <action selector="didSwipeTheView:" destination="BYZ-38-t0r" id="cMm-2Z-aEb"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="mut-Ma-jZ5">
+                    <connections>
+                        <action selector="didPanGesture:" destination="BYZ-38-t0r" id="ijs-1g-v0f"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="136.23188405797103" y="122.54464285714285"/>
         </scene>

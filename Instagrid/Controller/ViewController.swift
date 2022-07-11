@@ -11,6 +11,8 @@ import UIKit
 class ViewController: UIViewController, UIGestureRecognizerDelegate {
 
 
+    @IBOutlet weak var mainView: UIStackView!
+
     @IBOutlet weak var layoutThreeView: LayoutThreeView!
     @IBOutlet weak var layoutTwoView: LayoutTwoView!
     @IBOutlet weak var layoutOneView: LayoutOneView!
@@ -22,9 +24,15 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var arrow: UIImageView!
 
 
+    let serviceSharing: SharingService = SharingService()
 
     let servicePicture: PictureProvider = PictureProvider()
+
     var currentImageTag: Int = 0
+
+    var currentLayout: Int = 0
+
+//    var currentPosition: CGRect = .zero
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,7 +87,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             layoutButtonTwoView.selectedModelButtonImage.isHidden = true
             layoutButtonThreeView.selectedModelButtonImage.isHidden = false
         }
+        currentLayout = sender.view?.tag ?? 0
     }
+
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         if UIDevice.current.orientation.isLandscape {
@@ -89,5 +99,49 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
 
+
+
+    @IBAction func didPanGesture(_ sender: UIPanGestureRecognizer) {
+
+        if sender.state == .began {
+ //      currentPosition = mainView.frame
+
+        } else if sender.state == .changed {
+            let translation = sender.translation(in: mainView)
+
+            let translationTransform = CGAffineTransform(translationX: translation.x,
+                                                         y: translation.y)
+            mainView.transform = translationTransform
+
+        } else if sender.state == .ended || sender.state == .cancelled {
+//            share(startPose: currentPosition)
+        }
+    }
+
+    func share() {
+        //param for startPose = startPose: CGRect
+        var image: UIImage
+
+        if currentLayout == 0 {
+            image = serviceSharing.transformViewToImage(view: layoutOneView)
+        } else if currentLayout == 1 {
+            image = serviceSharing.transformViewToImage(view: layoutTwoView)
+        } else  {
+            image = serviceSharing.transformViewToImage(view: layoutThreeView)
+        }
+
+        let imageShare = [ image ]
+        let activityViewController = UIActivityViewController(activityItems: imageShare , applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+        self.present(activityViewController, animated: true, completion: {
+        // self.mainView.frame = startPose
+        })
+
+    }
+
+    @IBAction func didSwipeTheView(_ sender: UISwipeGestureRecognizer) {
+        print("je suis swipé")
+        //share()
+    }
 }
 
