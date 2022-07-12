@@ -32,11 +32,15 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
 
     var currentLayout: Int = 0
 
-//    var currentPosition: CGRect = .zero
+    var currentPosition: CGRect = .zero
 
     override func viewDidLoad() {
         super.viewDidLoad()
         servicePicture.checkPermission()
+        let swipeUp = UISwipeGestureRecognizer (target: self, action: #selector(didSwipeTheView(_:)))
+        swipeUp.direction = .up
+        mainView.addGestureRecognizer(swipeUp)
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -99,27 +103,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
 
-
-
-    @IBAction func didPanGesture(_ sender: UIPanGestureRecognizer) {
-
-        if sender.state == .began {
- //      currentPosition = mainView.frame
-
-        } else if sender.state == .changed {
-            let translation = sender.translation(in: mainView)
-
-            let translationTransform = CGAffineTransform(translationX: translation.x,
-                                                         y: translation.y)
-            mainView.transform = translationTransform
-
-        } else if sender.state == .ended || sender.state == .cancelled {
-//            share(startPose: currentPosition)
-        }
-    }
-
-    func share() {
-        //param for startPose = startPose: CGRect
+    func share(startPose position: CGRect) {
         var image: UIImage
 
         if currentLayout == 0 {
@@ -134,14 +118,57 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         let activityViewController = UIActivityViewController(activityItems: imageShare , applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = self.view
         self.present(activityViewController, animated: true, completion: {
-        // self.mainView.frame = startPose
+            // self.mainView.frame = startPose
         })
 
     }
 
-    @IBAction func didSwipeTheView(_ sender: UISwipeGestureRecognizer) {
+    @objc func didSwipeTheView(_ sender: UISwipeGestureRecognizer) {
+        print("j'ai commencé le swipe")
+
+        if sender.state == .began {
+
+            currentPosition = mainView.frame
+
+        } else if sender.state == .changed {
+
+            let translation = mainView.transform
+
+            mainView.transform = CGAffineTransform(translationX: CGFloat(0), y: -200)
+
+            let translationTransform = CGAffineTransform(translationX: CGFloat(0), y: translation.y - 200)
+            UIView.animate(withDuration: 0.3) {
+                self.mainView.transform = translationTransform
+            }
+
+        } else if sender.state == .ended || sender.state == .cancelled {
+
+            if mainView.frame.origin.x <= 10 {
+                share(startPose: currentPosition)
+            }
+        }
         print("je suis swipé")
-        //share()
     }
+    //
+    //        @IBAction func didPanGesture(_ sender: UIPanGestureRecognizer) {
+    //            // à mettre dans swipegesture
+    //            if sender.state == .began {
+    //                //      currentPosition = mainView.frame
+    //
+    //            } else if sender.state == .changed {
+    //                let translation = sender.translation(in: mainView)
+    //
+    //                let translationTransform = CGAffineTransform(translationX: translation.x,
+    //                                                             y: translation.y)
+    //                //translationX: CGFloat(0), y: translation.y - 250
+    //                mainView.transform = translationTransform
+    //
+    //            } else if sender.state == .ended || sender.state == .cancelled {
+    //
+    //                if mainView.frame.origin.x <= 10 {
+    //                    share(startPose: currentPosition)
+    //                }
+    //            }
+    //        }
 }
 
