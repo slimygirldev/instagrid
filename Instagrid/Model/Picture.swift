@@ -10,7 +10,5 @@ import UIKit
 
 struct Picture {
 
-    var picture: UIImage
-    var layout: Int = 0
-    var chosenPictures: [UIImage?] = [nil, nil, nil, nil]
+    var picture: UIImage 
 }

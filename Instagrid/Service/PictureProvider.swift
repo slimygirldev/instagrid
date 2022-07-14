@@ -27,8 +27,10 @@ class PictureProvider: NSObject, UIImagePickerControllerDelegate, UINavigationCo
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if picker.sourceType == .photoLibrary {
-            let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage
-            imagePicked = Picture(picture: image!)
+            if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+                imagePicked = Picture(picture: image)
+            }
+
         }
         picker.dismiss(animated: true, completion: { ()
             let name = Notification.Name(rawValue: "PictureNotification")

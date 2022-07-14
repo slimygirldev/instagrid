@@ -10,7 +10,6 @@ import UIKit
 
 class ViewController: UIViewController, UIGestureRecognizerDelegate {
 
-
     @IBOutlet weak var mainView: UIStackView!
 
     @IBOutlet weak var layoutThreeView: LayoutThreeView!
@@ -22,7 +21,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var layoutButtonOneView: LayoutButtonView!
 
     @IBOutlet weak var arrow: UIImageView!
-
 
     let serviceSharing: SharingService = SharingService()
 
@@ -39,8 +37,10 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         servicePicture.checkPermission()
         let swipeUp = UISwipeGestureRecognizer (target: self, action: #selector(didSwipeTheView(_:)))
         swipeUp.direction = .up
+        let swipeLeft = UISwipeGestureRecognizer (target: self, action: #selector(didSwipeTheView(_:)))
+        swipeLeft.direction = .left
+        mainView.addGestureRecognizer(swipeLeft)
         mainView.addGestureRecognizer(swipeUp)
-
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -68,7 +68,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     }
 
     @IBAction func didTapModelButton(_ sender: UITapGestureRecognizer) {
-
         if sender.view?.tag == 0 {
             layoutOneView.isHidden = false
             layoutTwoView.isHidden = true
@@ -118,57 +117,54 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         let activityViewController = UIActivityViewController(activityItems: imageShare , applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = self.view
         self.present(activityViewController, animated: true, completion: {
-            // self.mainView.frame = startPose
         })
 
+        //On completion
+        activityViewController.completionWithItemsHandler = { (activityType: UIActivity.ActivityType?, completed: Bool, arrayReturnedItems: [Any]?, error: Error?) in
+            // Restore mainView position
+            UIView.animate(withDuration: 0.3) {
+                self.mainView.transform = .identity
+            }
+            //error handeling
+            if completed {
+                let alert = UIAlertController(title: "Succes", message: "🎉Image shared successfully🎉", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default))
+                self.present(alert, animated: true, completion: nil)
+            } else {
+                let alert = UIAlertController(title: "Cancel", message: "Image sharing cancelled.", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default))
+                self.present(alert, animated: true, completion: nil)
+            }
+            if let shareError = error {
+                let alert = UIAlertController(title: "Error", message: "\(shareError.localizedDescription)", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default))
+                self.present(alert, animated: true, completion: nil)
+                print("error while sharing: \(shareError.localizedDescription)")
+            }
+        }
     }
 
     @objc func didSwipeTheView(_ sender: UISwipeGestureRecognizer) {
-        print("j'ai commencé le swipe")
 
-        if sender.state == .began {
+        currentPosition = mainView.frame
 
-            currentPosition = mainView.frame
+        if sender.direction == .up {
+            let translationTransform = CGAffineTransform(translationX: 0, y: -(mainView.frame.origin.y + (mainView.superview?.frame.height ?? 0)))
 
-        } else if sender.state == .changed {
-
-           // let translation = mainView.transform
-
- //           mainView.transform = CGAffineTransform(translationX: CGFloat(0), y: -200)
-
-            let translationTransform = CGAffineTransform(translationX: CGFloat(0), y: mainView.frame.origin.y - 200)
             UIView.animate(withDuration: 0.3) {
                 self.mainView.transform = translationTransform
+            } completion: { finished in
+                self.share(startPose: self.currentPosition)
             }
+        } else if sender.direction == .left {
+            let translationTransform = CGAffineTransform(translationX: -(mainView.frame.origin.x + (mainView.superview?.frame.width ?? 0)), y: 0)
 
-        } else if sender.state == .ended || sender.state == .cancelled {
-
-            if mainView.frame.origin.x <= 10 {
-                share(startPose: currentPosition)
+            UIView.animate(withDuration: 0.3) {
+                self.mainView.transform = translationTransform
+            } completion: { finished in
+                self.share(startPose: self.currentPosition)
             }
         }
-        print("je suis swipé")
     }
-    //
-    //        @IBAction func didPanGesture(_ sender: UIPanGestureRecognizer) {
-    //            // à mettre dans swipegesture
-    //            if sender.state == .began {
-    //                //      currentPosition = mainView.frame
-    //
-    //            } else if sender.state == .changed {
-    //                let translation = sender.translation(in: mainView)
-    //
-    //                let translationTransform = CGAffineTransform(translationX: translation.x,
-    //                                                             y: translation.y)
-    //                //translationX: CGFloat(0), y: translation.y - 250
-    //                mainView.transform = translationTransform
-    //
-    //            } else if sender.state == .ended || sender.state == .cancelled {
-    //
-    //                if mainView.frame.origin.x <= 10 {
-    //                    share(startPose: currentPosition)
-    //                }
-    //            }
-    //        }
 }
 
