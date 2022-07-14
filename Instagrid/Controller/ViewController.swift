@@ -132,11 +132,11 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
 
         } else if sender.state == .changed {
 
-            let translation = mainView.transform
+           // let translation = mainView.transform
 
-            mainView.transform = CGAffineTransform(translationX: CGFloat(0), y: -200)
+ //           mainView.transform = CGAffineTransform(translationX: CGFloat(0), y: -200)
 
-            let translationTransform = CGAffineTransform(translationX: CGFloat(0), y: translation.y - 200)
+            let translationTransform = CGAffineTransform(translationX: CGFloat(0), y: mainView.frame.origin.y - 200)
             UIView.animate(withDuration: 0.3) {
                 self.mainView.transform = translationTransform
             }
