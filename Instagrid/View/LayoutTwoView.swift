@@ -14,6 +14,9 @@ class LayoutTwoView: UIView {
     @IBOutlet weak var imageRight: UIImageView!
     @IBOutlet weak var imageLeft: UIImageView!
 
+    func isReady() -> Bool{
+        return imageBot.image != nil && imageLeft.image != nil && imageRight.image != nil
+    }
 
     func setImage(tag: Int, image: UIImage) {
         if tag == 0 {

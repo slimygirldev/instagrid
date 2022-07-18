@@ -128,35 +128,61 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             //error handeling
             if completed {
                 let alert = UIAlertController(title: "Succes", message: "🎉Image shared successfully🎉", preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default))
+                alert.addAction(UIAlertAction(title: "Continue", style: UIAlertAction.Style.default))
                 self.present(alert, animated: true, completion: nil)
+                print("share success")
             } else {
                 let alert = UIAlertController(title: "Cancel", message: "Image sharing cancelled.", preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default))
+                alert.addAction(UIAlertAction(title: "Continue", style: UIAlertAction.Style.default))
                 self.present(alert, animated: true, completion: nil)
             }
             if let shareError = error {
                 let alert = UIAlertController(title: "Error", message: "\(shareError.localizedDescription)", preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default))
+                alert.addAction(UIAlertAction(title: "Continue", style: UIAlertAction.Style.default))
                 self.present(alert, animated: true, completion: nil)
                 print("error while sharing: \(shareError.localizedDescription)")
             }
         }
     }
 
+    func errorImage() {
+            let alert = UIAlertController(title: "Error", message: "Set all images before sharing.", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "Continue", style: UIAlertAction.Style.default))
+            self.present(alert, animated: true, completion: nil)
+    }
+
     @objc func didSwipeTheView(_ sender: UISwipeGestureRecognizer) {
+        let orientation = UIDevice.current.orientation
 
         currentPosition = mainView.frame
 
-        if sender.direction == .up {
+        //checking / error
+        if currentLayout == 0 {
+            if !layoutOneView.isReady() {
+                errorImage()
+            }
+        }
+        if currentLayout == 1 {
+            if !layoutOneView.isReady() {
+                errorImage()
+            }
+        }
+        if currentLayout == 2 {
+            if !layoutOneView.isReady() {
+                errorImage()
+            }
+        }
+        print(orientation.isPortrait)
+        if sender.direction == .up && orientation.isPortrait{
             let translationTransform = CGAffineTransform(translationX: 0, y: -(mainView.frame.origin.y + (mainView.superview?.frame.height ?? 0)))
 
             UIView.animate(withDuration: 0.3) {
                 self.mainView.transform = translationTransform
             } completion: { finished in
+                print("je vais appeler share ( )")
                 self.share(startPose: self.currentPosition)
             }
-        } else if sender.direction == .left {
+        } else if sender.direction == .left  && orientation.isLandscape {
             let translationTransform = CGAffineTransform(translationX: -(mainView.frame.origin.x + (mainView.superview?.frame.width ?? 0)), y: 0)
 
             UIView.animate(withDuration: 0.3) {

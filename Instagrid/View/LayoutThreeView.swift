@@ -14,6 +14,10 @@ class LayoutThreeView: UIView {
     @IBOutlet weak var imageBotRight: UIImageView!
     @IBOutlet weak var imageTopLeft: UIImageView!
     @IBOutlet weak var imageBotLeft: UIImageView!
+
+    func isReady() -> Bool{
+        return imageTopRight.image != nil && imageBotRight.image != nil && imageTopLeft.image != nil && imageBotLeft.image != nil
+    }
     
     func setImage(tag: Int, image: UIImage) {
         if tag == 0 {
