@@ -13,19 +13,29 @@ class LayoutTwoView: UIView {
     @IBOutlet weak var imageBot: UIImageView!
     @IBOutlet weak var imageRight: UIImageView!
     @IBOutlet weak var imageLeft: UIImageView!
+    var isImageOneReady: Bool = false
+    var isImageTwoReady: Bool = false
+    var isImageThreeReady: Bool = false
 
     func isReady() -> Bool{
-        return imageBot.image != nil && imageLeft.image != nil && imageRight.image != nil
+        if isImageOneReady && isImageTwoReady && isImageThreeReady == true {
+            return true
+        } else {
+            return false
+        }
     }
 
     func setImage(tag: Int, image: UIImage) {
         if tag == 0 {
+            isImageOneReady = true
             imageLeft.image = image
             imageLeft.contentMode = .scaleAspectFill
         } else if tag == 1 {
+            isImageTwoReady = true
             imageRight.image = image
             imageRight.contentMode = .scaleAspectFill
         } else {
+            isImageThreeReady = true
             imageBot.image = image
             imageRight.contentMode = .scaleAspectFill
         }

@@ -14,22 +14,33 @@ class LayoutThreeView: UIView {
     @IBOutlet weak var imageBotRight: UIImageView!
     @IBOutlet weak var imageTopLeft: UIImageView!
     @IBOutlet weak var imageBotLeft: UIImageView!
+    var isImageOneReady: Bool = false
+    var isImageTwoReady: Bool = false
+    var isImageThreeReady: Bool = false
+    var isImageFourReady: Bool = false
 
     func isReady() -> Bool{
-        return imageTopRight.image != nil && imageBotRight.image != nil && imageTopLeft.image != nil && imageBotLeft.image != nil
+        if isImageOneReady && isImageTwoReady && isImageThreeReady == true {
+            return true
+        } else {
+            return false
+        }
     }
-    
     func setImage(tag: Int, image: UIImage) {
         if tag == 0 {
+            isImageOneReady = true
             imageTopLeft.image = image
             imageTopLeft.contentMode = .scaleAspectFill
         } else if tag == 1 {
+            isImageTwoReady = true
             imageTopRight.image = image
             imageTopRight.contentMode = .scaleAspectFill
         } else if tag == 2{
+            isImageThreeReady = true
             imageBotLeft.image = image
             imageBotLeft.contentMode = .scaleAspectFill
         } else {
+            isImageFourReady = true
             imageBotRight.image = image
             imageBotRight.contentMode = .scaleAspectFill
         }

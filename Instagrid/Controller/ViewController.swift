@@ -146,40 +146,19 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     }
 
     func errorImage() {
-            let alert = UIAlertController(title: "Error", message: "Set all images before sharing.", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "Continue", style: UIAlertAction.Style.default))
-            self.present(alert, animated: true, completion: nil)
+        let alert = UIAlertController(title: "Error", message: "Set all images before sharing.", preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Continue", style: UIAlertAction.Style.default))
+        self.present(alert, animated: true, completion: nil)
     }
 
-    @objc func didSwipeTheView(_ sender: UISwipeGestureRecognizer) {
+    func swipeAnimation(_ sender: UISwipeGestureRecognizer) {
         let orientation = UIDevice.current.orientation
-
-        currentPosition = mainView.frame
-
-        //checking / error
-        if currentLayout == 0 {
-            if !layoutOneView.isReady() {
-                errorImage()
-            }
-        }
-        if currentLayout == 1 {
-            if !layoutOneView.isReady() {
-                errorImage()
-            }
-        }
-        if currentLayout == 2 {
-            if !layoutOneView.isReady() {
-                errorImage()
-            }
-        }
-        print(orientation.isPortrait)
-        if sender.direction == .up && orientation.isPortrait{
+        if sender.direction == .up && orientation.isPortrait {
             let translationTransform = CGAffineTransform(translationX: 0, y: -(mainView.frame.origin.y + (mainView.superview?.frame.height ?? 0)))
 
             UIView.animate(withDuration: 0.3) {
                 self.mainView.transform = translationTransform
             } completion: { finished in
-                print("je vais appeler share ( )")
                 self.share(startPose: self.currentPosition)
             }
         } else if sender.direction == .left  && orientation.isLandscape {
@@ -189,6 +168,31 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
                 self.mainView.transform = translationTransform
             } completion: { finished in
                 self.share(startPose: self.currentPosition)
+            }
+        }
+    }
+
+    @objc func didSwipeTheView(_ sender: UISwipeGestureRecognizer) {
+        //checking images in mainView / error
+        if currentLayout == 0 {
+            if layoutOneView.isReady() == false {
+                errorImage()
+            } else {
+                swipeAnimation(sender)
+            }
+        }
+        if currentLayout == 1 {
+            if layoutTwoView.isReady() == false {
+                errorImage()
+            } else {
+                swipeAnimation(sender)
+            }
+        }
+        if currentLayout == 2 {
+            if layoutThreeView.isReady() == false {
+                errorImage()
+            } else {
+                swipeAnimation(sender)
             }
         }
     }
