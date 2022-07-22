@@ -30,7 +30,6 @@ class PictureProvider: NSObject, UIImagePickerControllerDelegate, UINavigationCo
             if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
                 imagePicked = Picture(picture: image)
             }
-
         }
         picker.dismiss(animated: true, completion: { ()
             let name = Notification.Name(rawValue: "PictureNotification")
@@ -46,6 +45,7 @@ class PictureProvider: NSObject, UIImagePickerControllerDelegate, UINavigationCo
             print("Access to Photo Library was denied.")
         }
     }
+
     func checkPermission() {
         if PHPhotoLibrary.authorizationStatus() != PHAuthorizationStatus.authorized {
             PHPhotoLibrary.requestAuthorization({ (status: PHAuthorizationStatus) -> Void in ()})
@@ -56,5 +56,4 @@ class PictureProvider: NSObject, UIImagePickerControllerDelegate, UINavigationCo
                 .requestAuthorization(requestAuthorizationHandler)
         }
     }
-
 }

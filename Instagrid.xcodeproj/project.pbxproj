@@ -83,11 +83,11 @@
 		98D603CA286C87C3001CF7E1 /* Instagrid */ = {
 			isa = PBXGroup;
 			children = (
+				98D603D9286C87C4001CF7E1 /* Info.plist */,
 				9887AED1286EE97A00003DBB /* Service */,
 				98D603E1286C880B001CF7E1 /* Model */,
 				98D603E0286C87F7001CF7E1 /* Controller */,
 				98D603DF286C87DF001CF7E1 /* View */,
-				98D603D9286C87C4001CF7E1 /* Info.plist */,
 				98D603E2286C8828001CF7E1 /* SupportingFiles */,
 			);
 			path = Instagrid;

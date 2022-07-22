@@ -39,7 +39,7 @@ class LayoutThreeView: UIView {
             isImageThreeReady = true
             imageBotLeft.image = image
             imageBotLeft.contentMode = .scaleAspectFill
-        } else {
+        } else if tag == 3 {
             isImageFourReady = true
             imageBotRight.image = image
             imageBotRight.contentMode = .scaleAspectFill

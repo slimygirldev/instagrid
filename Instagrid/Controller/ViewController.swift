@@ -52,6 +52,15 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        if UIDevice.current.orientation.isLandscape {
+            arrow.image = UIImage(named: "Arrow Left")
+        } else {
+            arrow.image = UIImage(named: "Arrow Up")
+        }
+    }
+
     @objc func handlePictureNotification() {
         let model: Picture  = servicePicture.getPicture()
         layoutOneView.setImage(tag: currentImageTag, image: model.picture)
@@ -91,15 +100,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             layoutButtonThreeView.selectedModelButtonImage.isHidden = false
         }
         currentLayout = sender.view?.tag ?? 0
-    }
-
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        if UIDevice.current.orientation.isLandscape {
-            arrow.image = UIImage(named: "Arrow Left")
-        } else {
-            arrow.image = UIImage(named: "Arrow Up")
-        }
     }
 
     func share(startPose position: CGRect) {

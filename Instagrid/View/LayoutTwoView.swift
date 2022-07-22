@@ -34,10 +34,10 @@ class LayoutTwoView: UIView {
             isImageTwoReady = true
             imageRight.image = image
             imageRight.contentMode = .scaleAspectFill
-        } else {
+        } else if tag == 2 {
             isImageThreeReady = true
             imageBot.image = image
-            imageRight.contentMode = .scaleAspectFill
+            imageBot.contentMode = .scaleAspectFill
         }
     }
 }
